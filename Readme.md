@@ -1,114 +1,67 @@
-## PHP Endpoint Bootstrap
+## Faq Endpoint
 ==========================
-This repo is intend to use as boilerplate for various endpoints developed in PHP.
+This repo is base on [PHP Endpoint Bootstrap](https://github.com/MyanmarAPI/php-endpoint-bootstrap)
 
 ### Installation
 
 - Clone this repo
-- Change your own remote
 - run composer install
-- place your codes
 
 ##### Applicaiont Environment
 
 Create a file with name '.env' in your project root directory. And past the 
 following code in it.
 
-	APP_ENV=local
-	APP_DEBUG=true
-	APP_KEY=Your APP Key
+	API_APP_KEY=YourApiAppKey
+	API_APP_SECRET=YourApiAppSecret
 
-	APP_LOCALE=en
-	APP_FALLBACK_LOCALE=en
-
-	CACHE_DRIVER=memcached
-	SESSION_DRIVER=memcached
-	QUEUE_DRIVER=database
-
-The value for **APP_KEY** should have 32 words which is combined with character 
+The value for **API_APP_KEY** and **API_APP_SECRET** should have 32 words which is combined with character 
 and numeric.
 
-##### Config
+##### For Local Test 
 
-You can set key value pair for your application config in config/app.php. 
-You shold change the value of **api_key** in it.
+your app folder 
+- php artisan db:seed
 
-##### For Using Api Support
-[Api Support documentation](https://github.com/hexcores/api-support)
-
-
-
-### Development
-
-##### Model
-
-Model files should be in app/Model directory. For more query function see 
-[mongo lite documentation](https://github.com/hexcores/mongo-lite)
-
-```php
-
-	<?php namespace App\Model;
+### Avaliable Api 
 	
-	use App\Model\AbstractModel;
+For all Faq
+
+ - api/v1/faq
+
+For Faq By id
+
+ - api/v1/faq/question/{id}
+
+For Faq By Question Type ( Yes/No or Open-Ended)
+
+ - api/v1/faq/type?type=yes_no
+ - api/v1/faq/type?type=open_ended
+
+For Faq By Question Section
+
+ - api/v1/faq/section?section=something
+
+ For Faq By Question
+ 
+ - api/v1/faq/find-question?question=something
+
+All Faq result have paginate.Default is limit = 10. If u want to change limit u can set 
+
+	- api/v1/faq?limit=3
+
+and page too.
+
+	- api/v1/faq?page=4
 	
-	class User extends AbstractModel
-	{
-		public function getCollectionName()
-		{
-			return 'users';
-		}
-		
-		public function create(array $data)
-		{
-			// do your stuff here
-		}
-	}
-
-```
-
-```php
-
-	// app/http/routes.php
-	$app->get('/get-users', function ()
-	{
-		dump((new \App\Model\User())->all());
-	});
-
-```
 
 ##### Route
 
-All endpoints will be called from elecapi api router only. So your route should not be public. The follwoing example will be the right way.
 
-```php
-
-	// app/http/route.php
-	
-	$app->group(['middleware' => 'auth'], function () use ($app)
-	{
-    	
-    	$app->get('/get-users', function ()
-    	{
-    		dump((new \App\Model\User())->all());
-    	});
-    	
-        // all the rest of your route should be in this scope.
-
-	});
-
-```
-
-***See [lumen documenation](http://lumen.laravel.com/docs) for further more 
-documentation***
-
-### Rules
-
-##### Development
-
-You must follow [psr](http://www.php-fig.org/) standard to develop endpoints.
 
 ### Technology
 
 - [Lumne](http://lumen.laravel.com/) <Micro Framework from Larave>
 - [Fractal](http://fractal.thephpleague.com/) <Composer package for REST API>
 - [Monog lite](https://github.com/hexcores/mongo-lite) <Composer package for mongodb>
+- [Api Support documentation](https://github.com/hexcores/api-support)

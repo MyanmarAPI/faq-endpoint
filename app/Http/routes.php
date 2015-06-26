@@ -15,9 +15,16 @@ $app->get('/', function() use ($app) {
     return $app->welcome();
 });
 
-$app->group(['middleware' => 'auth'], function () use ($app)
+$app->group(['middleware' => 'apiVerify','prefix'=>'api/v1/faq','namespace' => 'App\Http\Controllers'], function () use ($app)
 {
-    // do your stuff here
-});
+    $app->get('/','FaqController@index');
 
-require __DIR__.'/../Api/routes.php';
+    $app->get('/question/{id}','FaqController@getFaq');
+
+    $app->get('/find-question','FaqController@getFaqByQuestion');
+
+    $app->get('/type','FaqController@getFaqByType');
+    
+    $app->get('/section','FaqController@getFaqBySections');
+    
+});
