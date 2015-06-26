@@ -14,7 +14,7 @@ class FaqTransformer extends AbstractTransformer{
     	return [
     		'question' => $faq['question'],
     		'answer' => $faq['answer'],
-    		'type' => $faq['question_type'],
+    		'type' => config('app.type.'.$faq['question_type']),
     		'basis' => $faq['official_basis'],
     		'sections'	=> $faq['sections'],
             'url'       => $faq['url'],
