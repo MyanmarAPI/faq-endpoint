@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 /**
 * Model for the Faq API Application.
 *
-* @package Election Ddeveloper Website
+* @package Faq Endpoint
 * @license
 * @author Thet Paing Oo <thetpaing@hexcores.com>
 */
