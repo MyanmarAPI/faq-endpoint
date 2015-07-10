@@ -15,7 +15,7 @@ $app->get('/', function() use ($app) {
     return $app->welcome();
 });
 
-$app->group(['middleware' => 'apiVerify','prefix'=>'api/v1/faq','namespace' => 'App\Http\Controllers'], function () use ($app)
+$app->group(['middleware' => 'apiVerify','prefix'=>'faq/api/v1/faq','namespace' => 'App\Http\Controllers'], function () use ($app)
 {
     $app->get('/','FaqController@index');
 
