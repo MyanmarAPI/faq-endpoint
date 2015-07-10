@@ -2,8 +2,6 @@
 
 use Illuminate\Http\Request;
 
-use Hexcores\Api\Facades\Response as ApiResponse;
-
 use App\Model\FaqModel as Faq;
 use App\Transformers\FaqTransformer;
 
@@ -23,19 +21,12 @@ class FaqController extends Controller
 	protected $model;
 
     /**
-     * $faqTransformer
-     * @var [type]
-     */
-	protected $faqTransformer;
-
-    /**
      * construct method
      * @param App\Transformers\FaqTransformer $faqTransformer
      * @param App\Model\FaqModel              $model          
      */
-	function __construct(FaqTransformer $faqTransformer, Faq $model)
+	function __construct(Faq $model)
 	{
-		$this->faqTransformer = $faqTransformer;
 		$this->model = $model;
 	}
 
@@ -47,21 +38,10 @@ class FaqController extends Controller
      */
     public function index(Request $request)
     {
-    	$limit = $request->input('limit') ? : 10;
-
-    	$skip = $request->input('page') ? : 1;
+        $data = $this->transform($this->filter($request), new FaqTransformer(), true);
         
-        $faq = $this->model->paginate($limit, $skip);
-        
-    	if ($faq->isEmpty()) {
 
-    		return ApiResponse::missing();
-    	}
-
-    	return ApiResponse::ok(
-            $this->withPagination($faq,
-                $this->faqTransformer->transformCollection($faq->all())
-            ));
+        return response_ok($data);
     }
 
 
@@ -72,89 +52,13 @@ class FaqController extends Controller
      */
     public function getFaq($id)
     {
-    	$faq = $this->model->get($id);
+    	$faq = $this->model->find($id);
 
-    	if (!$faq) {
-
-    		return ApiResponse::missing();
-
-    	}
-    	return ApiResponse::ok($this->faqTransformer->transform($faq->toArray()));
-    }
-
-
-    /**
-     * Get Faq by question type
-     * @param  Illuminate\Http\Request $request
-     * @return Hexcores\Api\Facades\Response
-     */
-    public function getFaqByType(Request $request)
-    {
-        $type = $request->input('type');
-
-        $limit = $request->input('limit') ? : 10;
-
-        $skip = $request->input('page') ? : 1;
-
-        if ($type !== 'yes_no' && $type !== 'open_ended' || !$type) {
-
-            return ApiResponse::missing('U need Type Parameters');
-
+        if (!$faq) {
+            return response_missing();
         }
 
-        $faq = $this->model->getByType($type,$limit,$skip);
-
-        if ($faq->isEmpty()) {
-
-            return ApiResponse::missing();
-
-        }
-
-        return ApiResponse::ok(
-
-            $this->withPagination($faq,
-
-                $this->faqTransformer->transformCollection($faq->all())
-
-            ));        
-
-    }
-
-
-    /**
-     * Get Faq By Sections
-     * @param  Illuminate\Http\Request $request
-     * @return Hexcores\Api\Facades\Response
-     */
-    public function getFaqBySections(Request $request)
-    {
-        $section = $request->input('section');
-
-        $limit = $request->input('limit') ? : 10;
-
-        $skip = $request->input('page') ? : 1;
-
-        if (!$section) {
-            
-            return ApiResponse::missing('U need Section Parameters');
-        }
-
-        $faq = $this->model->getBySection($section,$limit,$skip);
-
-        if ($faq->isEmpty()) {
-
-            return ApiResponse::missing();
-
-        }
-
-        return ApiResponse::ok(
-
-            $this->withPagination($faq,
-
-                $this->faqTransformer->transformCollection($faq->all())
-
-            ));  
-
+        return response_ok($this->transform($faq, new FaqTransformer()));
     }
 
 
@@ -165,31 +69,36 @@ class FaqController extends Controller
      */
     public function getFaqByQuestion(Request $request)
     {
-        $question = $request->input('question');
-
-        $limit = $request->input('limit') ? : 10;
-
-        $skip = $request->input('page') ? : 1;
+        $question = $request->input('q');
 
         if (!$question) {
             
-            return ApiResponse::missing('U need Question Parameters');
+            return response_missing('U need Question Parameters');
         }
 
-        $faq = $this->model->getByQuestion($question,$limit,$skip);
+        $faq = $this->model->like('question',$question)->paginate();
 
-        if ($faq->isEmpty()) {
+        return response_ok($this->transform($faq, new FaqTransformer(), true));
+    }
 
-            return ApiResponse::missing();
+    /**
+     * Filter For FAQ
+     * @param  Illuminate\Http\Request $request
+     * @return LengthAwarePaginator
+     */
+    protected function filter($request)
+    {
+        if ($type = $request->input('type')) {
+
+            $this->model = $this->model->where('question_type', $type);
 
         }
 
-        return ApiResponse::ok(
+        if ($section = $request->input('section')) {
 
-            $this->withPagination($faq,
+            $this->model = $this->model->like('sections',$section);
+        }
 
-                $this->faqTransformer->transformCollection($faq->all())
-
-            ));  
+        return $this->model->paginate();
     }
 }

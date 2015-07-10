@@ -9,14 +9,7 @@ This repo is base on [PHP Endpoint Bootstrap](https://github.com/MyanmarAPI/php-
 
 ##### Applicaiont Environment
 
-Create a file with name '.env' in your project root directory. And past the 
-following code in it.
-
-	API_APP_KEY=YourApiAppKey
-	API_APP_SECRET=YourApiAppSecret
-
-The value for **API_APP_KEY** and **API_APP_SECRET** should have 32 words which is combined with character 
-and numeric.
+Create a file with name '.env' in your project root directory.
 
 ##### For Local Test 
 
@@ -28,37 +21,31 @@ your app folder
 	
 For all Faq
 
-	api/v1/faq
+	
+
+- Optional Parameters
+
+	type and section
+
+Example -
+	
+	faq/v1?type=:type&section=:section
 
 For Faq By id
 
-	api/v1/faq/question/{id}
-
-For Faq By Question Type ( Yes/No or Open-Ended)
-
-	api/v1/faq/type?type=yes_no
-	api/v1/faq/type?type=open_ended
-
-For Faq By Question Section
-
-	api/v1/faq/section?section=something
+	faq/v1/question/{id}
 
 For Faq By Question
 
-	api/v1/faq/find-question?question=something
+	faq/v1/search?q=:keyword
 
-All Faq result have paginate.Default is limit = 10. If u want to change limit u can set 
+All Faq result have paginate.Default is 15. If u want to change limit u can set 
 
-	api/v1/faq?limit=3
+	api/v1/faq?per_page=3
 
 and page too.
 
 	api/v1/faq?page=4
-
-
-##### Route
-
-
 
 ### Technology
 
