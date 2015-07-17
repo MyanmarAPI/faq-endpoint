@@ -41,11 +41,11 @@ For Faq By Question
 
 All Faq result have paginate.Default is 15. If u want to change limit u can set 
 
-	api/v1/faq?per_page=3
+	faq/v1/?per_page=3
 
 and page too.
 
-	api/v1/faq?page=4
+	faq/v1/?page=4
 
 ### Technology
 
