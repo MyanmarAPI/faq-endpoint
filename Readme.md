@@ -53,3 +53,7 @@ and page too.
 - [Fractal](http://fractal.thephpleague.com/) <Composer package for REST API>
 - [Monog lite](https://github.com/hexcores/mongo-lite) <Composer package for mongodb>
 - [Api Support](https://github.com/hexcores/api-support)
+
+### LICENSE
+
+##### GNU Lesser General Public License v3 (LGPL-3)
