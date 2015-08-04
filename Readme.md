@@ -29,11 +29,11 @@ For all Faq
 
 Example -
 	
-	faq/v1?type=:type&section=:section
+	faq/v1/list?type=:type&section=:section
 
 For Faq By id
 
-	faq/v1/question/{id}
+	faq/v1/{id}
 
 For Faq By Question
 
@@ -55,5 +55,9 @@ and page too.
 - [Api Support](https://github.com/hexcores/api-support)
 
 ### LICENSE
+
+### DOC
+
+[More Details For Faq](http://myanmarapi.github.io/endpoints/faq.html)
 
 ##### GNU Lesser General Public License v3 (LGPL-3)
