@@ -17,7 +17,7 @@ $app->get('/', function() use ($app) {
 
 $app->group(['middleware' => 'auth','prefix'=>'faq/v1','namespace' => 'App\Http\Controllers'], function () use ($app)
 {
-    $app->get('/','FaqController@index');
+    $app->get('/list','FaqController@index');
 
     $app->get('/question/{id}','FaqController@getFaq');
 
