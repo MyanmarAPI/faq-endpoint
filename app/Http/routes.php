@@ -19,8 +19,8 @@ $app->group(['middleware' => 'auth','prefix'=>'faq/v1','namespace' => 'App\Http\
 {
     $app->get('/list','FaqController@index');
 
-    $app->get('/question/{id}','FaqController@getFaq');
-
     $app->get('/search','FaqController@getFaqByQuestion');
+
+    $app->get('/{id}','FaqController@getFaq');
     
 });
