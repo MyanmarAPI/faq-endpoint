@@ -90,13 +90,23 @@ class FaqController extends Controller
     {
         if ($type = $request->input('type')) {
 
+            switch ($type) {
+                case 'yes_no':
+                    $type = 'Yes/No';
+                    break;
+                
+                case 'open_ended':
+                    $type = 'Open-ended';
+                    break;
+            }
+
             $this->model = $this->model->where('question_type', $type);
 
         }
 
         if ($section = $request->input('section')) {
 
-            $this->model = $this->model->like('sections',$section);
+            $this->model = $this->model->like('article_or_section',$section);
         }
 
         return $this->model->paginate();
