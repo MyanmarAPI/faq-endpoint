@@ -18,10 +18,11 @@ class FaqTransformer extends TransformerAbstract implements TransformerInterface
             'id'      => (string)$faq->_id,
             'question'=> $faq->question,
             'answer'  => $faq->answer,
+            'category' => $faq->question_category,
+            'number'  => $faq->number,
             'type'    => $faq->question_type,
-            'basis'   => $faq->official_basis,
-            'sections'=> $faq->sections,
-            'url'     => $faq->url,
+            'article_or_section'=> $faq->article_or_section,
+            'law_or_source'   => $faq->law_or_source,
         ];
     }
 	
