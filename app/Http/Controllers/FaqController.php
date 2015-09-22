@@ -109,6 +109,16 @@ class FaqController extends Controller
             $this->model = $this->model->like('article_or_section',$section);
         }
 
+        if ($category = $request->input('category')) {
+            
+            $this->model = $this->model->like('question_category',$category);
+        }
+
+        if ($law = $request->input('source')) {
+
+            $this->model = $this->model->like('law_or_source',$law);
+        }
+
         return $this->model->paginate();
     }
 }
