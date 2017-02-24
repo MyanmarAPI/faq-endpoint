@@ -24,3 +24,12 @@ $app->group(['middleware' => 'auth','prefix'=>'faq/v1','namespace' => 'App\Http\
     $app->get('/{id}','FaqController@getFaq');
     
 });
+
+$app->group([
+	'middleware' => 'auth',
+	'prefix'=>'voteredu',
+	'namespace' => 'App\Http\Controllers'
+	], function() use($app) 
+{
+	$app->get('/ballots/{type}', 'BallotController@getByType');
+});
