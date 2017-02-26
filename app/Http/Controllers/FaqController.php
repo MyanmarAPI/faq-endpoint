@@ -36,9 +36,10 @@ class FaqController extends Controller
      * @param  Illuminate\Http\Request $request
      * @return Hexcores\Api\Facades\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $year = '2015')
     {
-        $data = $this->transform($this->filter($request), new FaqTransformer(), true);
+
+        $data = $this->transform($this->filter($request, $year), new FaqTransformer(), true);
         
 
         return response_ok($data);
@@ -67,7 +68,7 @@ class FaqController extends Controller
      * @param  Illuminate\Http\Request $request
      * @return Hexcores\Api\Facades\Response
      */
-    public function getFaqByQuestion(Request $request)
+    public function getFaqByQuestion(Request $request, $year = '2015')
     {
         $question = $request->input('q');
 
@@ -76,7 +77,15 @@ class FaqController extends Controller
             return response_missing('U need Question Parameters');
         }
 
-        $faq = $this->model->like('question',$question)->paginate();
+        $this->model = $this->model->like('question',$question);
+
+        if ($year == '2017') {
+            $this->model = $this->model->where('election', '2017ByElection');
+        } else {
+            $this->model = $this->model->where('election', '2015GeneralElection');
+        }
+
+        $faq = $this->model->paginate();
 
         return response_ok($this->transform($faq, new FaqTransformer(), true));
     }
@@ -86,7 +95,7 @@ class FaqController extends Controller
      * @param  Illuminate\Http\Request $request
      * @return LengthAwarePaginator
      */
-    protected function filter($request)
+    protected function filter($request, $year)
     {
         if ($type = $request->input('type')) {
 
@@ -102,6 +111,12 @@ class FaqController extends Controller
 
             $this->model = $this->model->where('question_type', $type);
 
+        }
+
+        if ($year == '2017') {
+            $this->model = $this->model->where('election', '2017ByElection');
+        } else {
+            $this->model = $this->model->where('election', '2015GeneralElection');
         }
 
         if ($section = $request->input('section')) {

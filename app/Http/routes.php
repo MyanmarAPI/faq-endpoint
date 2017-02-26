@@ -22,6 +22,11 @@ $app->group(['middleware' => 'auth','prefix'=>'faq/v1','namespace' => 'App\Http\
     $app->get('/search','FaqController@getFaqByQuestion');
 
     $app->get('/{id}','FaqController@getFaq');
+
+    //Get with Year Indicators
+    $app->get('/{year}/list', 'FaqController@index');
+
+    $app->get('/{year}/search','FaqController@getFaqByQuestion');
     
 });
 
